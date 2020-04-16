@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "lib": ["es5", "es6"],
-    "module": "ESNext",
+    "module": "CommonJs",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "outDir": "dist",
