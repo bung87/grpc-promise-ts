@@ -16,6 +16,14 @@ const promisifyAll = function <
       const originalFunction: grpc.MethodDefinition<TRequest, TResponse> =
         client[functionName];
 
+      if (
+        originalFunction.requestStream === undefined &&
+        originalFunction.responseStream === undefined
+      ) {
+        // actual grpc methods will have both of these populated
+        return;
+      }
+
       let rpcType: RpcType;
       switch (originalFunction.requestStream) {
         case true:
