@@ -1,37 +1,47 @@
 {
-  "name": "grpc-promise",
-  "version": "1.4.0",
+  "author": "David Walsh",
+  "bugs": {
+    "url": "https://github.com/rhinodavid/grpc-promise-ts/issues"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "grpc": "^1.24.2",
+    "ts-lib": "^0.0.5",
+    "typescript": "^3.8.3"
+  },
   "description": "GRPC promisify module for all Request/Response types: standard and stream",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "gulp test"
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "import-sort-parser-typescript": "^6.0.0",
+    "prettier": "^2.0.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/carlessistare/grpc-promise.git"
-  },
+  "files": [
+    "dist/**/*"
+  ],
+  "homepage": "https://github.com/rhinodavid/grpc-promise-ts#readme",
   "keywords": [
     "grpc-promise",
     "grpc",
+    "grpc-promise-ts",
+    "typescript",
     "promise",
     "promisify",
     "functional"
   ],
-  "author": "Carles Sistare",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/carlessistare/grpc-promise/issues"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "name": "grpc-promise-ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhinodavid/grpc-promise-ts.git"
   },
-  "homepage": "https://github.com/carlessistare/grpc-promise#readme",
-  "devDependencies": {
-    "coveralls": "2.13.0",
-    "eslint": "3.19.0",
-    "gulp": "3.9.1",
-    "gulp-eslint": "3.0.1",
-    "gulp-mocha": "4.3.0",
-    "istanbul": "0.4.5",
-    "mocha": "3.2.0",
-    "should": "11.2.1",
-    "sinon": "2.1.0"
-  }
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc"
+  },
+  "version": "0.1.0"
 }
