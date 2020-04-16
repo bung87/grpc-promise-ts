@@ -4,7 +4,7 @@ export interface TUnaryResult<TResponse> extends Promise<TResponse> {
   clientUnaryCall: grpc.ClientUnaryCall | null;
 }
 
-export type TUnaryRpc<TRequest, TResponse> = <TRequest, TResponse>(
+export type TUnaryRpc<TRequest, TResponse> = (
   request: TRequest,
   metadata?: grpc.Metadata,
   options?: Partial<grpc.CallOptions>
