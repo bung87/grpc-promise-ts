@@ -10,7 +10,7 @@
     "ts-lib": "^0.0.5",
     "typescript": "^3.8.3"
   },
-  "description": "GRPC promisify module for all Request/Response types: standard and stream",
+  "description": "Typesafe GRPC",
   "devDependencies": {
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.10.0",
@@ -43,5 +43,5 @@
     "build": "tsc",
     "prepare": "tsc"
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
