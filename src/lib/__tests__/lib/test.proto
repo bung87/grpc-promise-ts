@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message TestRequest {
+  string request_string = 1;
+}
+
+message TestResponse {
+  string response_string = 1;
+}
+
+service Test {
+  rpc getUnary (TestRequest) returns (TestResponse);
+}

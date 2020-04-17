@@ -12,22 +12,21 @@ const promisifyAll = function <
   TPromiseClient extends grpc.Client
 >(client: TClient): TPromiseClient {
   Object.keys(Object.getPrototypeOf(client)).forEach(
-    <TRequest, TResponse>(functionName) => {
-      const originalFunction: grpc.MethodDefinition<TRequest, TResponse> =
-        client[functionName];
-
+    <TRequest, TResponse>(methodName) => {
+      const methodDefinition: grpc.MethodDefinition<TRequest, TResponse> &
+        Function = client[methodName];
       if (
-        originalFunction.requestStream === undefined &&
-        originalFunction.responseStream === undefined
+        methodDefinition.requestStream === undefined &&
+        methodDefinition.responseStream === undefined
       ) {
         // actual grpc methods will have both of these populated
         return;
       }
 
       let rpcType: RpcType;
-      switch (originalFunction.requestStream) {
+      switch (methodDefinition.requestStream) {
         case true:
-          switch (originalFunction.responseStream) {
+          switch (methodDefinition.responseStream) {
             case true:
               rpcType = RpcType.DUPLEX_STREAM;
               break;
@@ -37,7 +36,7 @@ const promisifyAll = function <
           }
           break;
         case false:
-          switch (originalFunction.responseStream) {
+          switch (methodDefinition.responseStream) {
             case true:
               rpcType = RpcType.READABLE_STREAM;
               break;
@@ -52,7 +51,7 @@ const promisifyAll = function <
 
       switch (rpcType) {
         case RpcType.UNARY:
-          client[functionName] = promisfyUnaryRpc(originalFunction);
+          client[methodName] = promisfyUnaryRpc(methodDefinition, client);
           break;
       }
     }

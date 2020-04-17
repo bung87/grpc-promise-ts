@@ -4,8 +4,10 @@
     "url": "https://github.com/rhinodavid/grpc-promise-ts/issues"
   },
   "dependencies": {
+    "@types/jest": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
+    "google-protobuf": "^3.11.4",
     "grpc": "^1.24.2",
     "ts-lib": "^0.0.5",
     "typescript": "^3.8.3"
@@ -15,8 +17,12 @@
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "get-port": "^5.1.1",
     "import-sort-parser-typescript": "^6.0.0",
-    "prettier": "^2.0.4"
+    "jest": "^25.3.0",
+    "jest-extended": "^0.11.5",
+    "prettier": "^2.0.4",
+    "ts-jest": "^25.3.1"
   },
   "files": [
     "dist/**/*"
@@ -33,7 +39,6 @@
   ],
   "license": "MIT",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "name": "grpc-promise-ts",
   "repository": {
     "type": "git",
@@ -41,7 +46,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "test": "jest"
   },
+  "types": "dist/index.d.ts",
   "version": "0.1.5"
 }
