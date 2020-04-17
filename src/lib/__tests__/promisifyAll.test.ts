@@ -1,9 +1,9 @@
 import { RESPONSE_PREFIX, THROW_INVALID_ARGUMENT } from "./lib/testHandler";
 import { Server, credentials } from "grpc";
-import { TestClient, TestPromiseClient } from "./lib/test_grpc_pb";
+import { TestClient, TestPromiseClient } from "./lib/proto/test_grpc_pb";
 
 import { EventEmitter } from "events";
-import { TestRequest } from "./lib/test_pb";
+import { TestRequest } from "./lib/proto/test_pb";
 import getPort from "get-port";
 import promisifyAll from "../promisifyAll";
 import { startServer } from "./lib/server";
