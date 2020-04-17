@@ -55,9 +55,12 @@
   },
   "scripts": {
     "build": "rollup --config",
+    "lint": "eslint .",
+    "postversion": "git push && git push --tags",
     "prepare": "rollup --config",
+    "prepublishOnly": "eslint . && jest",
     "test": "jest"
   },
   "types": "dist/index.d.ts",
-  "version": "0.1.5"
+  "version": "0.1.6"
 }

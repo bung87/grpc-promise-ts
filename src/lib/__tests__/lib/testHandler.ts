@@ -1,7 +1,7 @@
 import * as grpc from "grpc";
 
-import { ITestServer, TestService } from "./test_grpc_pb";
-import { TestRequest, TestResponse } from "./test_pb";
+import { ITestServer, TestService } from "./proto/test_grpc_pb";
+import { TestRequest, TestResponse } from "./proto/test_pb";
 
 import { ServiceError } from "grpc";
 

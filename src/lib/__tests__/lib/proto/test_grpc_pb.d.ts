@@ -6,7 +6,7 @@
 
 import * as grpc from "grpc";
 import * as test_pb from "./test_pb";
-import { TUnaryRpc } from "../../../lib/unary";
+import { TUnaryRpc } from "../../../unary";
 
 interface ITestService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     getUnary: ITestService_IgetUnary;
