@@ -1,4 +1,5 @@
-import grpc from "grpc";
+import {Client, MethodDefinition} from "grpc";
+
 import { promisfyUnaryRpc } from "./unary";
 
 enum RpcType {
@@ -8,12 +9,12 @@ enum RpcType {
   DUPLEX_STREAM,
 }
 const promisifyAll = function <
-  TClient extends grpc.Client,
-  TPromiseClient extends grpc.Client
+  TClient extends Client,
+  TPromiseClient extends Client
 >(client: TClient): TPromiseClient {
   Object.keys(Object.getPrototypeOf(client)).forEach(
     <TRequest, TResponse>(methodName) => {
-      const methodDefinition: grpc.MethodDefinition<TRequest, TResponse> &
+      const methodDefinition: MethodDefinition<TRequest, TResponse> &
         Function = client[methodName];
       if (
         methodDefinition.requestStream === undefined &&
