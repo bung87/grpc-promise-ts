@@ -1,4 +1,4 @@
-import {Client, MethodDefinition} from "grpc";
+import { Client, MethodDefinition } from "grpc";
 
 import { promisfyUnaryRpc } from "./unary";
 
@@ -8,14 +8,23 @@ enum RpcType {
   WRITEABLE_STREAM,
   DUPLEX_STREAM,
 }
-const promisifyAll = function <
+
+/**
+ * Takes a gRPC Client and converts the RPCs to a promise api.
+ * This function will not modify the RPC passed in, but any 
+ * methods called on the promise client that aren't RPCs
+ * (ex: `promiseClient.close()`) will be forwareded to the original
+ * client.
+ */
+const convertToPromiseClient = function <
   TClient extends Client,
   TPromiseClient extends Client
 >(client: TClient): TPromiseClient {
+  const result = Object.create(client);
   Object.keys(Object.getPrototypeOf(client)).forEach(
     <TRequest, TResponse>(methodName) => {
-      const methodDefinition: MethodDefinition<TRequest, TResponse> &
-        Function = client[methodName];
+      const methodDefinition: MethodDefinition<TRequest, TResponse> & Function =
+        client[methodName];
       if (
         methodDefinition.requestStream === undefined &&
         methodDefinition.responseStream === undefined
@@ -52,12 +61,12 @@ const promisifyAll = function <
 
       switch (rpcType) {
         case RpcType.UNARY:
-          client[methodName] = promisfyUnaryRpc(methodDefinition, client);
+          result[methodName] = promisfyUnaryRpc(methodDefinition, client);
           break;
       }
     }
   );
-  return (client as unknown) as TPromiseClient;
+  return result;
 };
 
-export default promisifyAll;
+export default convertToPromiseClient;

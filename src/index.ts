@@ -1,5 +1,5 @@
 export * from "./lib/unary";
 
-import _promisfyAll from "./lib/promisifyAll";
+import _convertToPromiseClient from "./lib/convertToPromiseClient";
 
-export const promisifyAll = _promisfyAll;
+export const convertToPromiseClient = _convertToPromiseClient;
