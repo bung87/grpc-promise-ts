@@ -58,7 +58,7 @@
     "lint": "eslint .",
     "postversion": "git push && git push --tags",
     "prepare": "rollup --config",
-    "prepublishOnly": "eslint . && jest",
+    "prepublishOnly": "eslint . && jest && rollup --config",
     "test": "jest"
   },
   "types": "dist/index.d.ts",
