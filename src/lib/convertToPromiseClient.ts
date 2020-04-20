@@ -10,15 +10,15 @@ enum RpcType {
 }
 
 /**
- * Takes a gRPC Client and converts the RPCs to a promise api.
- * This function will not modify the RPC passed in, but any 
- * methods called on the promise client that aren't RPCs
- * (ex: `promiseClient.close()`) will be forwareded to the original
- * client.
+ * Creates a gRPC client which extends the grpc.Client input
+ * by changing the RPC implemenations to return a promise instead of using
+ * a callback to get the response.
+ *
+ * This function has no side effects (it doesn't modify the RPC passed in).
  */
 const convertToPromiseClient = function <
   TClient extends Client,
-  TPromiseClient extends Client
+  TPromiseClient extends TClient
 >(client: TClient): TPromiseClient {
   const result = Object.create(client);
   Object.keys(Object.getPrototypeOf(client)).forEach(
@@ -63,6 +63,8 @@ const convertToPromiseClient = function <
         case RpcType.UNARY:
           result[methodName] = promisfyUnaryRpc(methodDefinition, client);
           break;
+        default:
+          throw new Error("Streaming RPCs aren't yet implemented");
       }
     }
   );
