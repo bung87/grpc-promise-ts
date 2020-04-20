@@ -1,11 +1,14 @@
-# grpc-promise-typescript
+# Typescript gRPC stubs with a Promise API
 
-__Type safe GRPC with a modern API__
+> This package is under development and should not be used
+> by anyone for any reason at this time. *Only client Unary RPCs are
+> implemented.* If you'd like to add support for streaming RPCs,
+> I'd love it, especially later in the summer, if you'd
+> [grab](./grpc-promise-ts/issues/1) [an](./grpc-promise-ts/issues/2)
+> [issue](./grpc-promise-ts/issues/3).
 
-_A Typescript fork of [`grpc-promise`](https://github.com/carlessistare/grpc-promise)_
+_A Typescript fork of [`grpc-promise`](../carlessistare/grpc-promise)_
 
-> This package is under active development and should not be used
-> by anyone for any reason at this time.
 
 ## Table of contents
 
