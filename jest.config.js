@@ -6,7 +6,11 @@ module.exports = {
     },
   },
   moduleFileExtensions: ["js", "ts"],
-  modulePathIgnorePatterns: ["node_modules", "./src/lib/__tests__/lib/*", "dist"],
+  modulePathIgnorePatterns: [
+    "node_modules",
+    "./src/lib/__tests__/lib/*",
+    "dist",
+  ],
   name: "test",
   setupFilesAfterEnv: ["jest-extended"],
   testEnvironment: "node",
