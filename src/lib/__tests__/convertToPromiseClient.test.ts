@@ -4,17 +4,19 @@ import { TestClient, TestPromiseClient } from "./lib/proto/test_grpc_pb";
 import { TestRequest, TestResponse } from "./lib/proto/test_pb";
 
 import { EventEmitter } from "events";
+import convertToPromiseClient from "../convertToPromiseClient";
 import getPort from "get-port";
-import promisifyAll from "../convertToPromiseClient";
 import { startServer } from "./lib/server";
 
 describe("Convert to promise client", () => {
   let server: Server;
   let client: TestClient;
   let promiseClient: TestPromiseClient;
+  let port: number;
 
   beforeAll(() => {
     return getPort().then((PORT) => {
+      port = PORT;
       return startServer(PORT)
         .then((s) => {
           server = s;
@@ -22,7 +24,7 @@ describe("Convert to promise client", () => {
             `localhost:${PORT}`,
             credentials.createInsecure()
           );
-          promiseClient = promisifyAll(client);
+          promiseClient = convertToPromiseClient(client);
           return new Promise((resolve, reject) => {
             client.waitForReady(Date.now() + 10000, (e) => {
               if (e) {
@@ -52,7 +54,7 @@ describe("Convert to promise client", () => {
       request.setRequestString("in");
       const expectedResponse = new TestResponse();
       expectedResponse.setResponseString(RESPONSE_PREFIX + "in");
-      const unaryCall = client.getUnary(request, (error, response) => {
+      const unaryCall = client.unary(request, (error, response) => {
         expect(unaryCall).toBeInstanceOf(EventEmitter); // prototype not set to `ClientUnaryCall`, so just use `EventEmitter`;
         expect(error).toBeNull();
         expect(response.getResponseString()).toEqual(
@@ -66,7 +68,7 @@ describe("Convert to promise client", () => {
       const request = new TestRequest();
       request.setRequestString("this_is_a_test");
 
-      const unaryResult = promiseClient.getUnary(request);
+      const unaryResult = promiseClient.unary(request);
 
       expect(unaryResult).toBeInstanceOf(Promise);
 
@@ -86,9 +88,46 @@ describe("Convert to promise client", () => {
       const request = new TestRequest();
       request.setRequestString(THROW_INVALID_ARGUMENT);
 
-      return expect(promiseClient.getUnary(request)).rejects.toThrow(
+      return expect(promiseClient.unary(request)).rejects.toThrow(
         "3 INVALID_ARGUMENT"
       );
     });
   });
+
+  describe("Bidirectional rpc", () => {
+    it("should pass through calls to the original client", async () => {
+      const client = new TestClient(
+        `localhost:${port}`,
+        credentials.createInsecure()
+      );
+      await new Promise((resolve) =>
+        client.waitForReady(Date.now() + 10000, (_e) => resolve())
+      );
+
+      const originalClientMethodMock = jest.fn();
+      client.bidirectional = originalClientMethodMock;
+      const request = new TestRequest();
+      request.setRequestString("_");
+
+      const promiseClient: TestPromiseClient = convertToPromiseClient(client);
+      promiseClient.bidirectional();
+      expect(originalClientMethodMock).toHaveBeenCalled();
+    });
+    
+    it("should not modify the original client", async () => {
+      const client = new TestClient(
+        `localhost:${port}`,
+        credentials.createInsecure()
+        );
+        await new Promise((resolve) =>
+        client.waitForReady(Date.now() + 10000, (_e) => resolve())
+        );
+        
+        const originalMethod = client.bidirectional;
+        const originalSource = client.bidirectional.toString();
+        convertToPromiseClient(client);
+        expect(client.bidirectional).toEqual(originalMethod);
+        expect(client.bidirectional.toString()).toEqual(originalSource);
+      });
+    });
 });

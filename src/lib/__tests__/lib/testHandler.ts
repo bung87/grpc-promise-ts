@@ -1,19 +1,21 @@
 import * as grpc from "grpc";
 
 import { ITestServer, TestService } from "./proto/test_grpc_pb";
+import { ServerDuplexStream, ServiceError } from "grpc";
 import { TestRequest, TestResponse } from "./proto/test_pb";
-
-import { ServiceError } from "grpc";
 
 export const THROW_INVALID_ARGUMENT = "THROW_INVALID_ARGUMENT";
 export const RESPONSE_PREFIX = "RESPONSE_";
 
 class TestHandler implements ITestServer {
+  bidirectional = (
+    call: ServerDuplexStream<TestRequest, TestResponse>
+  ): void => {};
   /**
    * Return the string provided in the request
    * back with the response prefix
    */
-  getUnary = (
+  unary = (
     call: grpc.ServerUnaryCall<TestRequest>,
     callback: grpc.sendUnaryData<TestResponse>
   ): void => {

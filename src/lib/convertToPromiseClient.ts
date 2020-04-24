@@ -1,12 +1,18 @@
-import { Client, MethodDefinition } from "grpc";
+import {
+  CallOptions,
+  Client,
+  ClientDuplexStream,
+  Metadata,
+  MethodDefinition,
+} from "grpc";
 
 import { promisfyUnaryRpc } from "./unary";
 
 enum RpcType {
   UNARY,
-  READABLE_STREAM,
-  WRITEABLE_STREAM,
-  DUPLEX_STREAM,
+  SERVER_STREAMING,
+  CLIENT_STREAMING,
+  BIDIRECTIONAL,
 }
 
 /**
@@ -17,10 +23,9 @@ enum RpcType {
  * This function has no side effects (it doesn't modify the RPC passed in).
  */
 const convertToPromiseClient = function <
-  TClient extends Client,
-  TPromiseClient extends TClient
->(client: TClient): TPromiseClient {
-  const result = Object.create(client);
+  TPromiseClient extends Client
+>(client: Client): TPromiseClient {
+  const result = Object.create(client) as TPromiseClient;
   Object.keys(Object.getPrototypeOf(client)).forEach(
     <TRequest, TResponse>(methodName) => {
       const methodDefinition: MethodDefinition<TRequest, TResponse> & Function =
@@ -38,17 +43,17 @@ const convertToPromiseClient = function <
         case true:
           switch (methodDefinition.responseStream) {
             case true:
-              rpcType = RpcType.DUPLEX_STREAM;
+              rpcType = RpcType.BIDIRECTIONAL;
               break;
             case false:
-              rpcType = RpcType.WRITEABLE_STREAM;
+              rpcType = RpcType.CLIENT_STREAMING;
               break;
           }
           break;
         case false:
           switch (methodDefinition.responseStream) {
             case true:
-              rpcType = RpcType.READABLE_STREAM;
+              rpcType = RpcType.SERVER_STREAMING;
               break;
             case false:
               rpcType = RpcType.UNARY;
@@ -63,8 +68,15 @@ const convertToPromiseClient = function <
         case RpcType.UNARY:
           result[methodName] = promisfyUnaryRpc(methodDefinition, client);
           break;
+        case RpcType.BIDIRECTIONAL:
+          result[methodName] = <TRequest, TResponse>(
+            metadata: Metadata = new Metadata(),
+            options: Partial<CallOptions> = {}
+          ): ClientDuplexStream<TRequest, TResponse> =>
+            methodDefinition.call(client, metadata, options);
+          break;
         default:
-          throw new Error("Streaming RPCs aren't yet implemented");
+          throw new Error("Readable/Writeable streams not yet implememnted");
       }
     }
   );

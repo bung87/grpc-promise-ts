@@ -9,5 +9,6 @@ message TestResponse {
 }
 
 service Test {
-  rpc getUnary (TestRequest) returns (TestResponse);
+  rpc unary (TestRequest) returns (TestResponse);
+  rpc bidirectional (stream TestRequest) returns (stream TestResponse);
 }
