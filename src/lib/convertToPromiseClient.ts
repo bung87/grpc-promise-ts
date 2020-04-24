@@ -22,9 +22,9 @@ enum RpcType {
  *
  * This function has no side effects (it doesn't modify the RPC passed in).
  */
-const convertToPromiseClient = function <
-  TPromiseClient extends Client
->(client: Client): TPromiseClient {
+const convertToPromiseClient = function <TPromiseClient extends Client>(
+  client: Client
+): TPromiseClient {
   const result = Object.create(client) as TPromiseClient;
   Object.keys(Object.getPrototypeOf(client)).forEach(
     <TRequest, TResponse>(methodName) => {
