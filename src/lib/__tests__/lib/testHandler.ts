@@ -1,7 +1,7 @@
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 
 import { ITestServer, TestService } from "./proto/test_grpc_pb";
-import { ServerDuplexStream, ServiceError } from "grpc";
+import { ServerDuplexStream, ServiceError } from "@grpc/grpc-js";
 import { TestRequest, TestResponse } from "./proto/test_pb";
 
 export const THROW_INVALID_ARGUMENT = "THROW_INVALID_ARGUMENT";

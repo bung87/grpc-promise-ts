@@ -113,21 +113,21 @@ describe("Convert to promise client", () => {
       promiseClient.bidirectional();
       expect(originalClientMethodMock).toHaveBeenCalled();
     });
-    
+
     it("should not modify the original client", async () => {
       const client = new TestClient(
         `localhost:${port}`,
         credentials.createInsecure()
-        );
-        await new Promise((resolve) =>
+      );
+      await new Promise((resolve) =>
         client.waitForReady(Date.now() + 10000, (_e) => resolve())
-        );
-        
-        const originalMethod = client.bidirectional;
-        const originalSource = client.bidirectional.toString();
-        convertToPromiseClient(client);
-        expect(client.bidirectional).toEqual(originalMethod);
-        expect(client.bidirectional.toString()).toEqual(originalSource);
-      });
+      );
+
+      const originalMethod = client.bidirectional;
+      const originalSource = client.bidirectional.toString();
+      convertToPromiseClient(client);
+      expect(client.bidirectional).toEqual(originalMethod);
+      expect(client.bidirectional.toString()).toEqual(originalSource);
     });
+  });
 });
