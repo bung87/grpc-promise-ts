@@ -1,5 +1,5 @@
 import { RESPONSE_PREFIX, THROW_INVALID_ARGUMENT } from "./lib/testHandler";
-import { Server, credentials } from "grpc";
+import { Server, credentials } from "@grpc/grpc-js";
 import { TestClient, TestPromiseClient } from "./lib/proto/test_grpc_pb";
 import { TestRequest, TestResponse } from "./lib/proto/test_pb";
 

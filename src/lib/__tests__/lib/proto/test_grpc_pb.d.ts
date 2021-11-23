@@ -14,7 +14,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 import * as test_pb from "./test_pb";
 import { TClientStreamingRpc, TUnaryRpc } from "grpc-promise-ts";
 
