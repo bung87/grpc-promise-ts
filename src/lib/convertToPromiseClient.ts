@@ -4,7 +4,7 @@ import {
   ClientDuplexStream,
   Metadata,
   MethodDefinition,
-} from "grpc";
+} from "@grpc/grpc-js";
 
 import { promisfyUnaryRpc } from "./unary";
 

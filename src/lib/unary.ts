@@ -4,7 +4,7 @@ import {
   ClientUnaryCall,
   Metadata,
   MethodDefinition,
-} from "grpc";
+} from "@grpc/grpc-js";
 
 export interface TUnaryResult<TResponse> extends Promise<TResponse> {
   // this promise will reject with a grpc.ServiceError
